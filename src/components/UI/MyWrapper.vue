@@ -18,7 +18,6 @@ export default {
 	background: gray;
 	padding: 15px;
 
-	width: fit-content;
 }
 
 </style>

@@ -2,13 +2,13 @@
     <div class="character">
         <div class="character__line">
             <div class="link inline clickable">
-                <input type="text" placeholder="Ссылка на человека">
+                <input v-model="character.link" type="text" placeholder="Ссылка на человека">
             </div>
             <button class="settings inline clickable"><i class="bi bi-three-dots-vertical"></i></button>
             <i @click="deleteThis" class="bi bi-trash inline delete"></i>            
             <div class="weight inline clickable">
                 <select class="select" v-model="character.weight">
-                    <option v-for="option in weightList.options" v-bind:value="option" v-bind:key="option">
+                    <option  v-for="option in weightList.options" v-bind:value="option" v-bind:key="option">
                         {{ option }}
                     </option>
                 </select>
@@ -32,10 +32,17 @@ export default {
     },
     methods: {
         deleteThis() {
-            console.log(this.character.id)
             this.$emit("deleteCharacter", this.character.id)
         }
-    }
+    },
+    // watch: {
+    //     character: {
+    //         handler(newValue, oldValue) {
+    //             console.log(this.$store.getters.getDayByName('friday').characters[0].link)
+    //         },
+    //         deep: true
+    //     }
+    // }
     
 }
 </script>

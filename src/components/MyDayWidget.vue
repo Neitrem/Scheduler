@@ -1,13 +1,20 @@
 <template>
-    <my-wrapper>
+    <my-wrapper class="wrapper">
         <div class="day">
-            <h2 class="title">Люди готовые в ПН</h2>
-            <p class="capacity">{{ getCurrentWeight() }} / {{ maxWeight }}</p>
+            <h2 class="title">Люди готовые в {{ currentDay.title }}</h2>
+            <!-- <p class="capacity">{{ getCurrentWeight() }} / {{ maxWeight }}</p> -->
             <div class="characters">
                 <div class="characters__container" >
-                    <MyCharacter v-for="character in characters" :key="character" :character ="character" @deleteCharacter="deleteCharacter"></MyCharacter>
+                    <MyCharacter 
+                        v-for="character in this.$store.getters.getCharacters(currentDay.name)" 
+                        :key="character" 
+                        :character ="character" 
+                        @deleteCharacter="deleteCharacter" 
+                        @updateCharacter="updateCharacter"
+                    >
+                    </MyCharacter>
                 </div>
-                <button @click="addNewCharacter" class="add-character-btn">Добавить</button>
+                <button @click="this.$store.commit('addNewCharacter', currentDay.name)" class="add-character-btn">Добавить</button>
  
             </div>
         </div>
@@ -17,37 +24,36 @@
 
 <script>
 import MyCharacter from '@/components/MyCharacter.vue'
+import { isProxy, toRaw } from 'vue';
 
 export default {
 
     components: {
         MyCharacter
     },
-    data() {
-        return {
-            characters: [
-                {"id": 0, "link": '', "weight": 1, "settings": { "avoid": [] }}
-            ],
-            maxWeight: 5
-        }
+    props: {
+        currentDay: Object
     },
     methods: {
-        addNewCharacter() {
-            this.characters.push({"id": this.characters.length, "link": '', "weight": 1, "settings": { "avoid": [] }})
+        deleteCharacter(character_id) {
+            this.$store.commit('deleteCharacter', {character_id: character_id, day_name: this.currentDay.name})
         },
-
-        deleteCharacter(id) {
-            this.characters.splice(id, 1)
-            console.log(id)
+        updateCharacter(newValue) {
+            if(isProxy(newValue))
+            {
+                const rawValue = toRaw(newValue)
+                this.$store.commit('updateCharater', {"value": rawValue, "day_name": this.currentDay.name})
+            }
         },
-
         getCurrentWeight() {
             var weight = 0
             this.characters.forEach(el =>  weight += el.weight)
             return weight
         }
     }
-}
+ 
+  
+} 
 </script>
 
 <style scoped lang="scss">
@@ -82,6 +88,11 @@ export default {
         &:hover {
             background: gainsboro;
         }
+        &:focus {
+                box-shadow: none !important;
+                border: none !important;
+                outline: none !important;
+        }
     }
 }
 
@@ -98,10 +109,38 @@ export default {
 
 
 .day {
-    width: 400px;
+    width: 100%;
+    margin: 0 auto;
+
     height: 300px;
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
+}
+
+
+.wrapper {
+    width: 380px;
+    margin: 0 auto;
+}
+
+::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 15px;
+  background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar
+{
+  width: 12px;
+  border-radius: 15px;
+  background-color: #F5F5F5;
+}
+::-webkit-scrollbar-thumb
+{
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background-color: #555;
 }
 
 </style>
