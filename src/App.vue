@@ -28,7 +28,7 @@ export default  {
 }
 </script>
 
-<style>
+<style lang="scss">
 p {
     margin: 0;
 }
@@ -55,6 +55,24 @@ input, input::selection {
 	border: none;
 }
 
+.add-character-btn {
+        width: 30%;
+
+        border-radius: 15px;
+        border: none;
+        background: white;
+
+        margin-bottom: 10px;
+
+        &:hover {
+            background: gainsboro;
+        }
+        &:focus {
+			box-shadow: none !important;
+			border: none !important;
+			outline: none !important;
+        }
+    }
 
 
 </style>

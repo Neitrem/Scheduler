@@ -8,9 +8,9 @@
                     <MyCharacter 
                         v-for="character in this.$store.getters.getCharacters(currentDay.name)" 
                         :key="character" 
-                        :character ="character" 
+                        :character ="character"
+                        :currentDay = "currentDay"
                         @deleteCharacter="deleteCharacter" 
-                        @updateCharacter="updateCharacter"
                     >
                     </MyCharacter>
                 </div>
@@ -24,10 +24,9 @@
 
 <script>
 import MyCharacter from '@/components/MyCharacter.vue'
-import { isProxy, toRaw } from 'vue';
 
 export default {
-
+    
     components: {
         MyCharacter
     },
@@ -38,13 +37,13 @@ export default {
         deleteCharacter(character_id) {
             this.$store.commit('deleteCharacter', {character_id: character_id, day_name: this.currentDay.name})
         },
-        updateCharacter(newValue) {
-            if(isProxy(newValue))
-            {
-                const rawValue = toRaw(newValue)
-                this.$store.commit('updateCharater', {"value": rawValue, "day_name": this.currentDay.name})
-            }
-        },
+        // updateCharacter(newValue) {
+        //     if(isProxy(newValue))
+        //     {
+        //         const rawValue = toRaw(newValue)
+        //         this.$store.commit('updateCharater', {"value": rawValue, "day_name": this.currentDay.name})
+        //     }
+        // },
         getCurrentWeight() {
             var weight = 0
             this.characters.forEach(el =>  weight += el.weight)
@@ -76,24 +75,7 @@ export default {
         width: 100%
     }
     
-    .add-character-btn {
-        width: 30%;
-
-        border-radius: 15px;
-        border: none;
-        background: white;
-
-        margin-bottom: 10px;
-
-        &:hover {
-            background: gainsboro;
-        }
-        &:focus {
-                box-shadow: none !important;
-                border: none !important;
-                outline: none !important;
-        }
-    }
+    
 }
 
 .title {

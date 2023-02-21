@@ -7,39 +7,23 @@ export default createStore({
                 name: "friday",
                 title: "ПТ",
                 characters: [
-                    {"id": 0, "link": '', "weight": 1, "settings": { "avoid": [] }}
+                    {"id": 0, "link": '', "weight": 1, "settings": { "avoid": [{"id": 0, "link": ''}] }}
                 ],
                 maxWeight: 5
             },
             {
-                name: "saturday_morning",
-                title: "СБ утро",
+                name: "saturday",
+                title: "СБ",
                 characters: [
-                    {"id": 0, "link": '', "weight": 1, "settings": { "avoid": [] }}
+                    {"id": 0, "link": '', "weight": 1, "settings": { "avoid": [{"id": 0, "link": ''}] }}
                 ],
                 maxWeight: 5
             },
             {
-                name: "saturday_evening",
-                title: "СБ вечер",
+                name: "sunday",
+                title: "ВС",
                 characters: [
-                    {"id": 0, "link": '', "weight": 1, "settings": { "avoid": [] }}
-                ],
-                maxWeight: 5
-            },
-            {
-                name: "sunday_morning",
-                title: "ВС утро",
-                characters: [
-                    {"id": 0, "link": '', "weight": 1, "settings": { "avoid": [] }}
-                ],
-                maxWeight: 5
-            },
-            {
-                name: "sunday_evening",
-                title: "ВС вечер",
-                characters: [
-                    {"id": 0, "link": '', "weight": 1, "settings": { "avoid": [] }}
+                    {"id": 0, "link": '', "weight": 1, "settings": { "avoid": [{"id": 0, "link": ''}] }}
                 ],
                 maxWeight: 5
             },
@@ -59,6 +43,9 @@ export default createStore({
         getCharacters: (state) => (day_name) => {
             //console.log(day_name)
             return state.days.find(day => day.name == day_name).characters
+        },
+        getCharacter: (state) => (day_name, character_id) => {
+            return state.days.find(day => day.name == day_name).characters.find(character => character.id == character_id)
         }
     },
     mutations: {
@@ -81,8 +68,15 @@ export default createStore({
             })
         },
         updateCharater(state, data) {
-            
-            state.days.find(day => day.name == data.day_name).characters.splice(data.value.id, 1, data.value)
+            state.days.find(day => day.name == data.day_name).characters.splice(data.character.id, 1, data.character)
+        },
+
+    },
+    actions: {
+        compare(state) {
+            for(day in state.days) {
+
+            }
         }
     }
   })
